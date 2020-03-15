@@ -26,9 +26,9 @@ float& Matrix::getVal(int x,int y)
  std::ostream& operator<<(std::ostream& os, Matrix const & m)
  {
    cout<<endl;
-   for (int i=0;i<m.xSize;++i){
+   for (int j=0;j<m.ySize;++j){
      cout<<'|';
-     for (int j=0;j<m.ySize;++j){
+     for (int i=0;i<m.xSize;++i){
        std::cout << std::setw(4);
        cout<< m.mat[i][j] <<"  ";
      }
