@@ -10,6 +10,8 @@ public:
 
   //get value of cell by reference
 	float& getVal(int x, int y);
+  int getXSize();
+  int getYSize();
 
   friend std::ostream& operator<<(std::ostream& os, Matrix const & m);
 private:

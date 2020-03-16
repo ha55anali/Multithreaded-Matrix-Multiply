@@ -38,3 +38,12 @@ float& Matrix::getVal(int x,int y)
 
    return os;
  }
+
+ int Matrix::getXSize()
+ {
+	 return xSize;
+ }
+ int Matrix::getYSize()
+ {
+	 return ySize;
+ }
