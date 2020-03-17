@@ -1,5 +1,8 @@
 #include "Matrix.h"
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <pthread.h>
 #include <string.h>
 #include <sys/types.h>
@@ -115,6 +118,52 @@ void getParameters(int argc, char* argv[], char*& MAFile, char*& MBFile, int& Th
 	}
 
 	return;
+}
+
+Matrix* ReadMatrixFile(char* file)
+{
+  int f = open(file, O_RDONLY);
+  const int buffS=1000;
+  char* buff=new char[buffS];
+  char* buffTok=buff;
+
+  read(f,buff, buffS);
+  //tokenize on new line
+  char* line=strtok_r(buff,"\n",&buffTok);
+
+  //get matrix size
+  int xSize=0;
+  int ySize=0;
+  char* token=strtok(line," ");
+  ySize=atof(token);
+  token=strtok(NULL," ");
+  xSize=atof(token);
+  Matrix* M=new Matrix(xSize,ySize);
+
+  cout<< endl << "x: "<<xSize << "  ySize: "<<ySize<<endl;
+
+  line=strtok_r(NULL,"\n",&buffTok);
+  int xCount=0;
+  int yCount=0;
+  while (line != NULL)
+    {
+      if (line[0] != '#')
+      {
+        M->getVal(xCount,yCount)=atof(line);
+
+        ++xCount;
+        if (xCount == xSize)
+          {
+            xCount=0;
+            ++yCount;
+          }
+        
+      }
+
+      line=strtok_r(NULL,"\n",&buffTok);
+    }
+
+  return M;
 }
 
 int main(int argc, char* argv[])
