@@ -168,4 +168,16 @@ Matrix* ReadMatrixFile(char* file)
 
 int main(int argc, char* argv[])
 {
+  char* MA,* MB;
+  int ThreadCount;
+  getParameters(argc,argv,MA,MB,ThreadCount);
+
+  Matrix* A=ReadMatrixFile(MA);
+  Matrix* B=ReadMatrixFile(MB);
+
+  cout<<*A<<*B;
+  
+  Matrix* Z=Multiply(*A,*B,ThreadCount);
+
+  cout<<*Z;
 }
