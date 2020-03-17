@@ -1,9 +1,12 @@
 #include "Matrix.h"
 
 #include <pthread.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <iostream>
+#include <unistd.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -87,6 +90,33 @@ Matrix* Multiply(Matrix A, Matrix B, int NoThread)
   return Out;
 }
 
-int main()
+void getParameters(int argc, char* argv[], char*& MAFile, char*& MBFile, int& ThreadCount)
+{
+	int opt;
+
+	while((opt = getopt(argc, argv, "a:b:t:")) != -1)
+	{
+		switch(opt)
+		{
+		case 'a':
+			cout << optarg;
+			MAFile = new char[strlen(optarg) + 1];
+			strcpy(MAFile, optarg);
+			break;
+		case 'b':
+			cout << optarg;
+			MBFile = new char[strlen(optarg) + 1];
+			strcpy(MBFile, optarg);
+			break;
+		case 't':
+			ThreadCount = atoi(optarg);
+			break;
+		}
+	}
+
+	return;
+}
+
+int main(int argc, char* argv[])
 {
 }
