@@ -55,19 +55,22 @@ Matrix* Multiply(Matrix A, Matrix B, int NoThread)
   if (A.getXSize() != B.getYSize())
     throw invalid_argument("invalid dimensions");
 
-  Matrix* Out=new Matrix(A.getYSize(),B.getXSize());
+  if (NoThread > A.getYSize())
+    NoThread=A.getYSize();
+
+  Matrix* Out=new Matrix(B.getXSize(),A.getYSize());
 
   //get row dimensions
   int* yDivisions=new int[NoThread+1];
   int yDiv=Out->getYSize()/NoThread;
   int yDivCount=1;
   yDivisions[0]=0;
-  while (yDiv*yDivCount < Out->getYSize())
+  while (yDiv*yDivCount <= Out->getYSize())
     {
-      yDivisions[yDivCount]=yDiv;
+      yDivisions[yDivCount]=yDiv*yDivCount;
       ++yDivCount;
     }
-  yDivisions[yDivCount]=Out->getYSize();
+  yDivisions[yDivCount-1]=Out->getYSize();
 
   pthread_t* ptid=new pthread_t[NoThread];
   MulParam* m=new MulParam[NoThread];
