@@ -86,12 +86,26 @@ Matrix* Multiply(Matrix A, Matrix B, int NoThread)
     m[c].startY=yDivisions[c];
     m[c].endY=yDivisions[c+1];
 
-    pthread_create(&ptid[c],NULL,matMul,&m[c]);
+    try{
+      pthread_create(&ptid[c],NULL,matMul,&m[c]);
+    }
+    catch(invalid_argument& e)
+      {
+        delete[] ptid;
+        delete[] yDivisions;
+        delete[] m;
+        delete Out;
+        throw e;
+      }
     }
 
   void* a;
   for (int c=0;c<NoThread;++c)
     pthread_join(ptid[c],&a);
+
+  delete[] ptid;
+  delete[] yDivisions;
+  delete[] m;
 
   return Out;
 }
@@ -124,6 +138,10 @@ void getParameters(int argc, char* argv[], char*& MAFile, char*& MBFile, int& Th
 Matrix* ReadMatrixFile(char* file)
 {
   int f = open(file, O_RDONLY);
+
+  if (f<0)
+    throw invalid_argument("cannot open file");
+
   const int buffS=1000;
   char* buff=new char[buffS];
   char* buffTok=buff;
@@ -148,7 +166,17 @@ Matrix* ReadMatrixFile(char* file)
     {
       if (line[0] != '#')
       {
-        M->getVal(xCount,yCount)=atof(line);
+        try
+          {
+          M->getVal(xCount,yCount)=atof(line);
+          }
+        catch(invalid_argument& e)
+          {
+            delete M;
+            delete[] buff;
+            delete[] line;
+            throw e;
+          }
 
         ++xCount;
         if (xCount == xSize)
@@ -162,6 +190,8 @@ Matrix* ReadMatrixFile(char* file)
       line=strtok_r(NULL,"\n",&buffTok);
     }
 
+  delete[] buff;
+  delete[] line;
   return M;
 }
 
@@ -177,12 +207,27 @@ int main(int argc, char* argv[])
     return 1;
   }
 
-  Matrix* A=ReadMatrixFile(MA);
-  Matrix* B=ReadMatrixFile(MB);
+  try{
+    Matrix* A=ReadMatrixFile(MA);
+    Matrix* B=ReadMatrixFile(MB);
 
-  cout<<*A<<*B;
-  
-  Matrix* Z=Multiply(*A,*B,ThreadCount);
+    cout<<*A<<*B;
 
-  cout<<*Z;
+    Matrix* Z=Multiply(*A,*B,ThreadCount);
+
+    cout<<*Z;
+
+    delete A;
+    delete B;
+    delete Z;
+  }
+  catch(invalid_argument& e)
+    {
+      delete MA;
+      delete MB;
+      cout<< e.what();
+    }
+
+  delete MA;
+  delete MB;
 }
