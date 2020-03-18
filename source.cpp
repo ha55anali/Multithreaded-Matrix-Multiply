@@ -65,12 +65,12 @@ Matrix* Multiply(Matrix A, Matrix B, int NoThread)
   int yDiv=Out->getYSize()/NoThread;
   int yDivCount=1;
   yDivisions[0]=0;
-  while (yDiv*yDivCount <= Out->getYSize())
+  while ( yDivCount < NoThread)
     {
       yDivisions[yDivCount]=yDiv*yDivCount;
       ++yDivCount;
     }
-  yDivisions[yDivCount-1]=Out->getYSize();
+  yDivisions[yDivCount]=Out->getYSize();
 
   pthread_t* ptid=new pthread_t[NoThread];
   MulParam* m=new MulParam[NoThread];
