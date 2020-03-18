@@ -15,7 +15,7 @@ public:
 
   friend std::ostream& operator<<(std::ostream& os, Matrix const & m);
 private:
-	float** mat;
+	float* mat;
 	int xSize;
 	int ySize;
 };

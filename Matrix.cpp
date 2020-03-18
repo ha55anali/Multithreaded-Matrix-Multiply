@@ -8,10 +8,7 @@ using namespace std;
 Matrix::Matrix(int x, int y)
   :xSize(x),ySize(y)
 {
-  mat=new float*[x];
-  for (int c=0;c<x;++c){
-    mat[c]=new float[y];
-  }
+  mat=new float[x*y];
 };
 
 float& Matrix::getVal(int x,int y)
@@ -20,7 +17,7 @@ float& Matrix::getVal(int x,int y)
   if (x>=xSize || y>=ySize || x<0 || y<0)
     throw invalid_argument("matrix out of bounds");
 
-  return mat[x][y];
+  return mat[ x*ySize + y];
 }
 
  std::ostream& operator<<(std::ostream& os, Matrix const & m)
@@ -30,7 +27,7 @@ float& Matrix::getVal(int x,int y)
      cout<<'|';
      for (int i=0;i<m.xSize;++i){
        std::cout << std::setw(4);
-       cout<< m.mat[i][j] <<"  ";
+       cout<< m.mat[i*m.ySize + j] <<"  ";
      }
      cout<<'|';
      cout<<endl;
