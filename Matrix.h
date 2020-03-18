@@ -7,6 +7,7 @@ class Matrix
 public:
   //constructor
 	Matrix(int x, int y);
+  ~Matrix();
 
   //get value of cell by reference
 	float& getVal(int x, int y);

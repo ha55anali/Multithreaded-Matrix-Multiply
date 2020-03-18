@@ -11,6 +11,11 @@ Matrix::Matrix(int x, int y)
   mat=new float[x*y];
 };
 
+Matrix::~Matrix()
+{
+  delete[] mat;
+}
+
 float& Matrix::getVal(int x,int y)
 {
   //check if cell valid
