@@ -171,9 +171,15 @@ Matrix* ReadMatrixFile(char* file)
 
 int main(int argc, char* argv[])
 {
-  char* MA,* MB;
-  int ThreadCount;
+  char* MA=NULL,* MB=NULL;
+  int ThreadCount=1;
   getParameters(argc,argv,MA,MB,ThreadCount);
+
+  if (MA == NULL | MB == NULL | ThreadCount <= 0)
+  {
+    cout<<"invalid arguments";
+    return 1;
+  }
 
   Matrix* A=ReadMatrixFile(MA);
   Matrix* B=ReadMatrixFile(MB);
