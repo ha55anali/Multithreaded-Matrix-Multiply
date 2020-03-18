@@ -203,7 +203,7 @@ int main(int argc, char* argv[])
 
   if (MA == NULL | MB == NULL | ThreadCount <= 0)
   {
-    cout<<"invalid arguments";
+    cout<<"invalid arguments"<<endl;
     return 1;
   }
 
@@ -223,8 +223,6 @@ int main(int argc, char* argv[])
   }
   catch(invalid_argument& e)
     {
-      delete MA;
-      delete MB;
       cout<< e.what();
     }
 
