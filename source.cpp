@@ -1,5 +1,6 @@
 #include "Matrix.h"
 
+#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -25,6 +26,13 @@ struct MulParam
 	int startY;
 	int endY;
 };
+
+double CTimer() {
+	struct timeval tm;
+
+	gettimeofday(&tm,NULL);
+	return((double)tm.tv_sec + (double)(tm.tv_usec/1000000.0));
+}
 
 float getCell(Matrix A, Matrix B, int x, int y)
 {
@@ -207,15 +215,17 @@ int main(int argc, char* argv[])
     return 1;
   }
 
+  double startTime=CTimer();
+
   try{
     Matrix* A=ReadMatrixFile(MA);
     Matrix* B=ReadMatrixFile(MB);
 
-    cout<<*A<<*B;
+    // cout<<*A<<*B;
 
     Matrix* Z=Multiply(*A,*B,ThreadCount);
 
-    cout<<*Z;
+    // cout<<*Z;
 
     delete A;
     delete B;
@@ -226,6 +236,7 @@ int main(int argc, char* argv[])
       cout<< e.what();
     }
 
+  cout<<"Time Elapsed "<<CTimer() - startTime;
   delete MA;
   delete MB;
 }
