@@ -8,6 +8,7 @@ public:
   //constructor
 	Matrix(int x, int y);
   ~Matrix();
+  Matrix(Matrix const& M);
 
   //get value of cell by reference
 	float& getVal(int x, int y);

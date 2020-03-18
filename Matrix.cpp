@@ -16,6 +16,18 @@ Matrix::~Matrix()
   delete[] mat;
 }
 
+Matrix::Matrix(Matrix const& M)
+{
+  xSize=M.xSize;
+  ySize=M.ySize;
+  mat= new float[xSize*ySize];
+
+  for (int c=0;c<xSize*ySize; ++c)
+    {
+      mat[c]=M.mat[c];
+    }
+}
+
 float& Matrix::getVal(int x,int y)
 {
   //check if cell valid
