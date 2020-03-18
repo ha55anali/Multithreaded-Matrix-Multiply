@@ -105,12 +105,10 @@ void getParameters(int argc, char* argv[], char*& MAFile, char*& MBFile, int& Th
 		switch(opt)
 		{
 		case 'a':
-			cout << optarg;
 			MAFile = new char[strlen(optarg) + 1];
 			strcpy(MAFile, optarg);
 			break;
 		case 'b':
-			cout << optarg;
 			MBFile = new char[strlen(optarg) + 1];
 			strcpy(MBFile, optarg);
 			break;
@@ -142,8 +140,6 @@ Matrix* ReadMatrixFile(char* file)
   token=strtok(NULL," ");
   xSize=atof(token);
   Matrix* M=new Matrix(xSize,ySize);
-
-  cout<< endl << "x: "<<xSize << "  ySize: "<<ySize<<endl;
 
   line=strtok_r(NULL,"\n",&buffTok);
   int xCount=0;
